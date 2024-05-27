@@ -1,7 +1,6 @@
+import { useRef } from "react";
 import "@google/model-viewer";
 import glb from "./assets/demo.glb";
-
-import { useState, useRef } from "react";
 
 function App() {
   const model = useRef();
@@ -11,10 +10,8 @@ function App() {
     const targetPosition = dataset.position.split(" ").map(Number);
     const normalVector = dataset.normal.split(" ").map(Number);
 
-    // Set the camera target based on the position of the annotation
     model.current.cameraTarget = `${targetPosition[0]}m ${targetPosition[1]}m ${targetPosition[2]}m`;
 
-    // Calculate the camera orbit angles using the normal vector
     const azimuth =
       Math.atan2(normalVector[2], normalVector[0]) * (180 / Math.PI);
     const elevation = Math.asin(normalVector[1]) * (180 / Math.PI);
@@ -63,35 +60,3 @@ function App() {
 }
 
 export default App;
-
-// {
-//   "position": {
-//       "x": -1.2960553082139825,
-//       "y": 0.4318301377607727,
-//       "z": 0.44639169280005814
-//   },
-//   "normal": {
-//       "x": -0.03011840620190712,
-//       "y": 0.9995442363126058,
-//       "z": -0.002049698052532894
-//   },
-//   "uv": {
-//       "u": 0.49218707888230995,
-//       "v": 0.6039823192262876
-//   }
-// }
-
-// {
-//   "theta": 0,
-//   "phi": 1.3089969389957472,
-//   "radius": 6.656282620406839
-// }
-
-// {
-//   "x": 0.00028434752782402484,
-//   "y": 0.45026951533678605,
-//   "z": -0.0007063063588431673
-// }
-
-// data-orbit="1.3089969389957472 6.656282620406839 0"
-// data-target="0.00028434752782402484 0.45026951533678605 -0.0007063063588431673"
