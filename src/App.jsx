@@ -10,13 +10,18 @@ function App() {
     const targetPosition = dataset.position.split(" ").map(Number);
     const normalVector = dataset.normal.split(" ").map(Number);
 
+    // Set the camera target based on the position of the annotation
     model.current.cameraTarget = `${targetPosition[0]}m ${targetPosition[1]}m ${targetPosition[2]}m`;
 
+    // Calculate the camera orbit angles using the normal vector
     const azimuth =
       Math.atan2(normalVector[2], normalVector[0]) * (180 / Math.PI);
     const elevation = Math.asin(normalVector[1]) * (180 / Math.PI);
 
-    model.current.cameraOrbit = `${azimuth}deg ${elevation}deg 1m`;
+    // Set a smaller radius value for closer zoom
+    const closerZoomRadius = 0.2; // Adjust this value to control how close the zoom is
+
+    model.current.cameraOrbit = `${azimuth}deg ${elevation}deg ${closerZoomRadius}m`;
     model.current.fieldOfView = "45deg";
   };
 
@@ -26,7 +31,17 @@ function App() {
 
   return (
     <main>
-      <model-viewer ref={model} src={glb} touch-action="pan-y" camera-controls>
+      <model-viewer
+        ref={model}
+        src={glb}
+        touch-action="pan-y"
+        camera-controls
+        field-of-view="45deg"
+        min-field-of-view="25deg"
+        max-field-of-view="45deg"
+        interpolation-decay="200"
+        min-camera-orbit="auto auto 50%"
+      >
         <button
           onClick={handleButton}
           className="view-button"
